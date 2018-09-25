@@ -68,8 +68,10 @@ def on_intent(intent_request, session):
     intent_name = intent_request['intent']['name']
  
     # Dispatch to your skill's intent handlers
-    if intent_name == "NextBus":
+    if intent_name == "NextCinquanteHuit":
         return get_58_time(intent, session)
+    elif intent_name == "NextCinquante":
+        return get_50_time(intent, session)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     else:
@@ -97,14 +99,14 @@ def get_welcome_response():
     card_title = "Bienvenue"
     speech_output = "Bienvenue" \
                     "Vous pouvez demander: " \
-                    "Quand passe le prochain bus?"
+                    "Quand passe la prochaine 58?"
     card_output = "Bienvenue" \
                     "Vous pouvez demander: " \
-                    "Quand passe le prochain bus?"
+                    "Quand passe la prochaine 58?"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
     reprompt_text = "Vous pouvez demander:" \
-                    "Quand passe le prochain bus?"
+                    "Quand passe la prochaine 58?"
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session, card_output))
@@ -114,7 +116,7 @@ def get_58_time(intent, session):
     """Cherche les minutes avant les prochains passages
     """
  
-    card_title = "Ligne 58 Lesage/Parc"
+    card_title = "58 Direction Metro Cartier"
     session_attributes = {}
     should_end_session = True
  
@@ -144,25 +146,81 @@ def get_58_time(intent, session):
         count += 1
  
     if count == 0:
-        speech_output = "Pas de bus dans l'horaire"
-        card_output = "Pas de bus dans l'horaire."
+        speech_output = "Pas de 58 dans l'horaire"
+        card_output = "Pas de 58 dans l'horaire."
         reprompt_text = ""
     if count == 1:
-        speech_output = "Le prochain bus arrive dans " + str(minutesList[0]) + " minutes"
+        speech_output = "La prochaine 58 arrive dans " + str(minutesList[0]) + " minutes"
         card_output =  str(minutesList[0]) + " minutes."
         reprompt_text = ""
     if count == 2:
-        speech_output = "Les prochains bus arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes"
+        speech_output = "Les prochaines 58 arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes"
         card_output =  str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes."
         reprompt_text = ""
     if count >= 3:
-        speech_output = "Les prochains bus arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
+        speech_output = "Les prochaines 58 arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
         card_output =  str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
         reprompt_text = ""		
 	
     else:
         reprompt_text = "Vous pouvez dire: " \
-                        "Quand passe le prochain bus?"
+                        "Quand passe la prochaine 58?"
+    return build_response(session_attributes, build_speechlet_response(
+        card_title, speech_output, reprompt_text, should_end_session, card_output))
+
+def get_50_time(intent, session):
+    """Cherche les minutes avant les prochains passages
+    """
+ 
+    card_title = "50 Direction Terminus Le Carrefour"
+    session_attributes = {}
+    should_end_session = True
+ 
+    url="http://webservices.nextbus.com/service/publicXMLFeed?command=predictions&a=stl&r=50O&s=46116"
+    xml_data = urllib2.urlopen(url)
+
+    tree = etree.parse(xml_data)
+
+    xml_data.close()
+ 
+    #Find the root element
+    rootElem = tree.getroot()
+ 
+    #list that will hold the minutes before next busses
+    minutesList = []
+
+
+    #iterates over elements in rootElem finding minutes in the prediction tag
+    for element in rootElem.iter('prediction'):
+        if element.attrib:
+            minutes = element.get('minutes')
+            minutesList.append(minutes)
+
+    #counter to dertermine how the speech output will proceed
+    count = 0
+    for element in rootElem.iter('prediction'):
+        count += 1
+ 
+    if count == 0:
+        speech_output = "Pas de 50 dans l'horaire"
+        card_output = "Pas de 50 dans l'horaire."
+        reprompt_text = ""
+    if count == 1:
+        speech_output = "La prochaine 50 arrive dans " + str(minutesList[0]) + " minutes coin Saint-Martin et Jolicoeur."
+        card_output =  str(minutesList[0]) + " minutes coin Saint-Martin et Jolicoeur."
+        reprompt_text = ""
+    if count == 2:
+        speech_output = "Les prochaines 50 arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Saint-Martin et Jolicoeur"
+        card_output =  str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Saint-Martin et Jolicoeur."
+        reprompt_text = ""
+    if count >= 3:
+        speech_output = "Les prochaines 50 arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Saint-Martin et Jolicoeur"
+        card_output =  str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Saint-Martin et Jolicoeur"
+        reprompt_text = ""		
+	
+    else:
+        reprompt_text = "Vous pouvez dire: " \
+                        "Quand passe la prochaine 50?"
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session, card_output))
  

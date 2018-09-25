@@ -69,7 +69,7 @@ def on_intent(intent_request, session):
  
     # Dispatch to your skill's intent handlers
     if intent_name == "NextBus":
-        return get_bus_time(intent, session)
+        return get_58_time(intent, session)
     elif intent_name == "AMAZON.HelpIntent":
         return get_welcome_response()
     else:
@@ -98,20 +98,23 @@ def get_welcome_response():
     speech_output = "Bienvenue" \
                     "Vous pouvez demander: " \
                     "Quand passe le prochain bus?"
+    card_output = "Bienvenue" \
+                    "Vous pouvez demander: " \
+                    "Quand passe le prochain bus?"
     # If the user either does not reply to the welcome message or says something
     # that is not understood, they will be prompted again with this text.
     reprompt_text = "Vous pouvez demander:" \
                     "Quand passe le prochain bus?"
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
-        card_title, speech_output, reprompt_text, should_end_session))
+        card_title, speech_output, reprompt_text, should_end_session, card_output))
  
  
-def get_bus_time(intent, session):
+def get_58_time(intent, session):
     """Cherche les minutes avant les prochains passages
     """
  
-    card_title = intent['name']
+    card_title = "Ligne 58 Lesage/Parc"
     session_attributes = {}
     should_end_session = True
  
@@ -141,33 +144,33 @@ def get_bus_time(intent, session):
         count += 1
  
     if count == 0:
-        speech_output = "Pas de bus dans l'horaire" \
-        
+        speech_output = "Pas de bus dans l'horaire"
+        card_output = "Pas de bus dans l'horaire."
         reprompt_text = ""
     if count == 1:
-        speech_output = "Le prochain bus arrive dans " + str(minutesList[0]) + " minutes" \
- 
+        speech_output = "Le prochain bus arrive dans " + str(minutesList[0]) + " minutes"
+        card_output =  str(minutesList[0]) + " minutes."
         reprompt_text = ""
     if count == 2:
-        speech_output = "Les prochains bus arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes" \
- 
+        speech_output = "Les prochains bus arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes"
+        card_output =  str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes."
         reprompt_text = ""
     if count >= 3:
-        speech_output = "Les prochains bus arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes" \
- 
+        speech_output = "Les prochains bus arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
+        card_output =  str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
         reprompt_text = ""		
 	
     else:
         reprompt_text = "Vous pouvez dire: " \
                         "Quand passe le prochain bus?"
     return build_response(session_attributes, build_speechlet_response(
-        card_title, speech_output, reprompt_text, should_end_session))
+        card_title, speech_output, reprompt_text, should_end_session, card_output))
  
  
 # --------------- Helpers that build all of the responses ----------------------
  
  
-def build_speechlet_response(title, output, reprompt_text, should_end_session):
+def build_speechlet_response(title, output, reprompt_text, should_end_session, card):
     return {
         'outputSpeech': {
             'type': 'PlainText',
@@ -175,8 +178,8 @@ def build_speechlet_response(title, output, reprompt_text, should_end_session):
         },
         'card': {
             'type': 'Simple',
-            'title': 'SessionSpeechlet - ' + title,
-            'content': 'SessionSpeechlet - ' + output
+            'title': title,
+            'content': card
         },
         'reprompt': {
             'outputSpeech': {

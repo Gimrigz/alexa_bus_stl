@@ -150,16 +150,16 @@ def get_58_time(intent, session):
         card_output = "Pas de 58 dans l'horaire."
         reprompt_text = ""
     if count == 1:
-        speech_output = "La prochaine 58 arrive dans " + str(minutesList[0]) + " minutes"
-        card_output =  str(minutesList[0]) + " minutes."
+        speech_output = "La prochaine 58 vers le metro Cartier arrive dans " + str(minutesList[0]) + " minutes coin Lesage et Parc."
+        card_output =  str(minutesList[0]) + " minutes coin Lesage et Parc. "
         reprompt_text = ""
     if count == 2:
-        speech_output = "Les prochaines 58 arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes"
-        card_output =  str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes."
+        speech_output = "Les prochaines 58 vers le metro Cartier arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Lesage et Parc."
+        card_output =  str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Lesage et Parc. "
         reprompt_text = ""
     if count >= 3:
-        speech_output = "Les prochaines 58 arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
-        card_output =  str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes"
+        speech_output = "Les prochaines 58 vers le metro Cartier arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Lesage et Parc."
+        card_output =  str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Lesage et Parc."
         reprompt_text = ""		
 	
     else:
@@ -206,15 +206,15 @@ def get_50_time(intent, session):
         card_output = "Pas de 50 dans l'horaire."
         reprompt_text = ""
     if count == 1:
-        speech_output = "La prochaine 50 arrive dans " + str(minutesList[0]) + " minutes coin Saint-Martin et Jolicoeur."
+        speech_output = "La prochaine 50 vers le metro Montmorency arrive dans " + str(minutesList[0]) + " minutes coin Saint-Martin et Jolicoeur."
         card_output =  str(minutesList[0]) + " minutes coin Saint-Martin et Jolicoeur."
         reprompt_text = ""
     if count == 2:
-        speech_output = "Les prochaines 50 arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Saint-Martin et Jolicoeur"
+        speech_output = "Les prochaines 50 vers le metro Montmorency arrivent dans " + str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Saint-Martin et Jolicoeur"
         card_output =  str(minutesList[0]) + " et " + str(minutesList[1]) + " minutes coin Saint-Martin et Jolicoeur."
         reprompt_text = ""
     if count >= 3:
-        speech_output = "Les prochaines 50 arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Saint-Martin et Jolicoeur"
+        speech_output = "Les prochaines 50 vers le metro Montmorency arrivent dans " + str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Saint-Martin et Jolicoeur"
         card_output =  str(minutesList[0]) + " , " + str(minutesList[1]) + " et " + str(minutesList[2]) + " minutes coin Saint-Martin et Jolicoeur"
         reprompt_text = ""		
 	
